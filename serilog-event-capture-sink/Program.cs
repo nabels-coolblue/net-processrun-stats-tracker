@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reactive.Linq;
 
 namespace serilog_event_capture_sink
 {
@@ -13,6 +14,11 @@ namespace serilog_event_capture_sink
         {
             var log = new LoggerConfiguration()
                 .WriteTo.ColoredConsole()
+                .WriteTo.Observers(events => events
+                    .Do(evt => {
+                        Console.WriteLine($"Observed event {evt}");
+                    })
+                    .Subscribe())
                 .CreateLogger();
 
             log.Information("Hello world!");
