@@ -11,7 +11,7 @@ namespace serilog_event_capture_sink_tests
         public void TestMethod1()
         {
             var sut = new SerilogEventInterceptor();
-
+            
         }
     }
 }
