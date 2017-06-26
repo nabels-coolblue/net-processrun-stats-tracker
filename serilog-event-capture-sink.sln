@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "serilog-event-capture-sink", "serilog-event-capture-sink\serilog-event-capture-sink.csproj", "{DE665189-8D37-4A9C-BB8E-34C1DAC8636D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "serilog-event-capture-sink-tests", "serilog-event-capture-sink-tests\serilog-event-capture-sink-tests.csproj", "{2E907680-DDEF-4BDB-8F55-CD816AED981C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{DE665189-8D37-4A9C-BB8E-34C1DAC8636D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE665189-8D37-4A9C-BB8E-34C1DAC8636D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE665189-8D37-4A9C-BB8E-34C1DAC8636D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E907680-DDEF-4BDB-8F55-CD816AED981C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E907680-DDEF-4BDB-8F55-CD816AED981C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E907680-DDEF-4BDB-8F55-CD816AED981C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E907680-DDEF-4BDB-8F55-CD816AED981C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
