@@ -10,6 +10,7 @@ namespace serilog_event_capture_sink
     {
         static void Main(string[] args)
         {
+
         }
     }
 }
