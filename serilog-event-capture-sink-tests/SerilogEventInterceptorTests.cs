@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using serilog_event_capture_sink;
+using Ploeh.AutoFixture.AutoMoq;
+using Ploeh.AutoFixture;
 
 namespace serilog_event_capture_sink_tests
 {
@@ -10,8 +12,8 @@ namespace serilog_event_capture_sink_tests
         [TestMethod]
         public void TestMethod1()
         {
-            var sut = new SerilogEventInterceptor();
-            
+            IFixture fixture = new Fixture().Customize(new AutoConfiguredMoqCustomization()); 
+
         }
     }
 }
