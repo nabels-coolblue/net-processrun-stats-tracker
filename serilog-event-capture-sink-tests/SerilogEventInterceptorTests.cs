@@ -14,7 +14,7 @@ namespace serilog_event_capture_sink_tests
     public class SerilogEventInterceptorTests
     {
         [TestMethod]
-        public void LogEventLevel_OfError_ShouldRegisterAnError()
+        public void LogEventLevel_Error_ShouldRegisterAnError()
         {
             IFixture fixture = new Fixture().Customize(new AutoConfiguredMoqCustomization());
 
@@ -29,7 +29,7 @@ namespace serilog_event_capture_sink_tests
 
 
         [TestMethod]
-        public void LogEventLevel_OfFatal_ShouldRegisterAnError()
+        public void LogEventLevel_Fatal_ShouldRegisterAnError()
         {
             IFixture fixture = new Fixture().Customize(new AutoConfiguredMoqCustomization());
 
@@ -43,7 +43,7 @@ namespace serilog_event_capture_sink_tests
         }
 
         [TestMethod]
-        public void LogEventLevel_OfNormalLevels_ShouldNotRegisterErrors()
+        public void LogEventLevel_NormalLevels_ShouldNotRegisterErrors()
         {
             IFixture fixture = new Fixture().Customize(new AutoConfiguredMoqCustomization());
 
