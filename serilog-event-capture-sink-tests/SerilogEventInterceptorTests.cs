@@ -24,7 +24,7 @@ namespace serilog_event_capture_sink_tests
 
             sut.Intercept(logEvent);
 
-            trackerMock.Verify(m => m.RegisterError(logEvent.RenderMessage(null)), Times.Once());
+            trackerMock.Verify(m => m.RegisterError(string.Empty), Times.Once());
         }
 
 
@@ -39,7 +39,22 @@ namespace serilog_event_capture_sink_tests
 
             sut.Intercept(logEvent);
 
-            trackerMock.Verify(m => m.RegisterError(logEvent.RenderMessage(null)), Times.Once());
+            trackerMock.Verify(m => m.RegisterError(string.Empty), Times.Once());
+        }
+
+        [TestMethod]
+        public void LogEventLevel_OfNormalLevels_ShouldNotRegisterErrors()
+        {
+            IFixture fixture = new Fixture().Customize(new AutoConfiguredMoqCustomization());
+
+            var trackerMock = fixture.Freeze<Mock<IProcessRunStatisticsTracker>>();
+            var sut = fixture.Create<SerilogEventInterceptor>();
+            List<LogEvent> logEvents = new List<LogEvent>() { CreateLogEvent(LogEventLevel.Debug), CreateLogEvent(LogEventLevel.Verbose), CreateLogEvent(LogEventLevel.Information), CreateLogEvent(LogEventLevel.Warning) };
+
+            foreach (var logEvent in logEvents)
+                sut.Intercept(logEvent);
+
+            trackerMock.Verify(m => m.RegisterError(string.Empty), Times.Never());
         }
 
         private LogEvent CreateLogEvent(LogEventLevel level)
