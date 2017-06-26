@@ -14,48 +14,77 @@ namespace serilog_event_capture_sink
         static void Main(string[] args)
         {
             var processIntegrityChecker = new ProcessRunStatisticsTracker();
+            var serilogEventInterceptor= new SerilogEventInterceptor(processIntegrityChecker);
 
             var log = new LoggerConfiguration()
                 .WriteTo.ColoredConsole()
                 .WriteTo.Observers(events => events
                     .Do(evt => {
-                        processIntegrityChecker.InterceptLogEvent(evt);
+                        serilogEventInterceptor.Intercept(evt);
                     })
                     .Subscribe())
                 .CreateLogger();
 
             log.Information("Hello world!");
             log.Information("Hello again world!");
-            log.Error("I'm not getting a reply :(");
-            log.Fatal("I'm outta here!");
-            log.Information("World says hello!");
+            log.Error("Hmm, I'm not getting a reply :(");
+            log.Fatal("Well then, I'm outta here!");
 
-            var results = processIntegrityChecker.GetResults();
+            var results = processIntegrityChecker.GetReport();
 
-            log.Information($"Process ran with {results.ErrorCount} errors.");
+            log.Information($"Process ran with {results.ErrorCount} errors. Errors captured:");
 
+            foreach (var message in results.ErrorMessages)
+                log.Information($"Error: {message}");
+            
             Console.ReadKey();
         }
     }
 
-    public class ProcessRunStatisticsTracker
+    public class SerilogEventInterceptor
     {
-        public ProcessRunStatistics GetResults()
+        private const LogEventLevel LOG_EVENT_ERROR_FLOOR_VALUE = LogEventLevel.Error;
+
+        private IProcessRunStatisticsTracker _processRunStatisticsTracker { get; set; }
+
+        public SerilogEventInterceptor(IProcessRunStatisticsTracker processRunStatisticsTracker)
         {
-            var statistics = new ProcessRunStatistics() { ErrorCount = _logEvents.Count(logEvent => logEvent.Level >= LogEventLevel.Error) };
-            return statistics;
+            _processRunStatisticsTracker = processRunStatisticsTracker;
         }
 
-        private List<LogEvent> _logEvents { get; set; } = new List<LogEvent>();
-
-        public void InterceptLogEvent(LogEvent logEvent)
+        public void Intercept(LogEvent logEvent)
         {
-            _logEvents.Add(logEvent);
+            if (logEvent.Level >= LOG_EVENT_ERROR_FLOOR_VALUE)
+                _processRunStatisticsTracker.RegisterError(logEvent.RenderMessage());
         }
     }
 
-    public class ProcessRunStatistics
+    public interface IProcessRunStatisticsTracker
+    {
+        ProcessRunStatisticsReport GetReport();
+        void RegisterError(string error);
+    }
+
+    public class ProcessRunStatisticsTracker : IProcessRunStatisticsTracker
+    {
+        private List<string> _errors { get; set; } = new List<string>();
+
+        public ProcessRunStatisticsReport GetReport()
+        {
+            var statistics = new ProcessRunStatisticsReport() { ErrorCount = _errors.Count, ErrorMessages = _errors };
+            return statistics;
+        }
+
+        public void RegisterError(string error)
+        {
+            _errors.Add(error);
+        }
+    }
+
+    public class ProcessRunStatisticsReport
     {
         public int ErrorCount { get; set; }
+
+        public List<string> ErrorMessages { get; set; }
     }
 }
