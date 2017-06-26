@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,13 @@ namespace serilog_event_capture_sink
     {
         static void Main(string[] args)
         {
+            var log = new LoggerConfiguration()
+                .WriteTo.ColoredConsole()
+                .CreateLogger();
 
+            log.Information("Hello world!");
+
+            Console.ReadKey();
         }
     }
 }
